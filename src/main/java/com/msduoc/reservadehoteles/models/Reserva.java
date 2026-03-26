@@ -1,9 +1,6 @@
 package com.msduoc.reservadehoteles.models;
 
-// import java.util.Map;
-enum EstadoReserva {
-    Pendiente, Confirmada, Cancelada, Completada
-}
+import com.msduoc.reservadehoteles.enums.EstadoReserva;
 
 public class Reserva {
     private int id;

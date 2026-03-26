@@ -1,13 +1,15 @@
 package com.msduoc.reservadehoteles.models;
 
+import com.msduoc.reservadehoteles.enums.TipoHabitacion;
+
 public class Habitacion {
     private int id;
     private int numeroHabitacion;
     private boolean activa;
-    private String tipoHabitacion;
+    private TipoHabitacion tipoHabitacion;
     private double precioPorNoche;
 
-    public Habitacion(int id, int numeroHabitacion, boolean activa, String tipoHabitacion, double precioPorNoche) {
+    public Habitacion(int id, int numeroHabitacion, boolean activa, TipoHabitacion tipoHabitacion, double precioPorNoche) {
         this.id = id;
         this.numeroHabitacion = numeroHabitacion;
         this.activa = activa;
@@ -24,7 +26,7 @@ public class Habitacion {
     public boolean getActiva() {
         return activa;
     }
-    public String getTipoHabitacion() {
+    public TipoHabitacion getTipoHabitacion() {
         return tipoHabitacion;
     }
     public double getPrecioPorNoche() {
@@ -41,12 +43,8 @@ public class Habitacion {
     public void setActiva(boolean activa) {
         this.activa = activa;
     }
-    public void setTipoHabitacion(String tipoHabitacion) {
-        if (tipoHabitacion == null || tipoHabitacion.trim().isEmpty()) {
-            System.out.println("Error de consistencia: el tipo de habitación no puede estar vacío.");
-        } else {
-            this.tipoHabitacion = tipoHabitacion;
-        }
+    public void setTipoHabitacion(TipoHabitacion tipoHabitacion) {
+        this.tipoHabitacion = tipoHabitacion;
     }
     public void setPrecioPorNoche(double precioPorNoche) {
         if (precioPorNoche < 0) {
