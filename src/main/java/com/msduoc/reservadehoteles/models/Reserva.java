@@ -8,15 +8,14 @@ public class Reserva {
     private String fechaEntrada;
     private String fechaSalida;
     private String fechaReserva;
-    private int clienteId;
-    private int habitacionId;
+    private Cliente cliente;
 
-    public Reserva(int id, String fechaEntrada, String fechaSalida, String fechaReserva,
-            int clienteId, int habitacionId) {
+
+    public Reserva(int id,  EstadoReserva estado, String fechaEntrada, String fechaSalida, String fechaReserva,
+            Cliente cliente) {
         this.id = id;
-        this.clienteId = clienteId;
-        this.habitacionId = habitacionId;
-        this.estado = EstadoReserva.PENDIENTE;
+        this.cliente = cliente;
+        this.estado = estado;
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
         this.fechaReserva = fechaReserva;
@@ -26,12 +25,8 @@ public class Reserva {
         return id;
     }
 
-    public int getClienteId() {
-        return clienteId;
-    }
-
-    public int getHabitacionId() {
-        return habitacionId;
+    public Cliente getCliente() {
+        return cliente;
     }
 
     public EstadoReserva getEstado() {
