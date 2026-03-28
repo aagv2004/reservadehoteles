@@ -60,9 +60,6 @@ public class HabitacionController {
         new Reserva(5, EstadoReserva.CANCELADA, "01/01/2022", "02/01/2022", "29/12/2021", c5))));
     }
 
-    // Comparar fechas para ver si están disponibles las habitaciones:
-
-
     // Endpoints
     @GetMapping("/habitaciones")
     public List<Habitacion> getHabitaciones() {
@@ -98,21 +95,30 @@ public class HabitacionController {
     public List<Habitacion> getHabitacionesDisponibles(@RequestParam String fechaEntrada, @RequestParam String fechaSalida) {
         List<Habitacion> disponibles = new ArrayList<>();
 
+        // Transformar a Date porque el perla usó String
         LocalDate busquedaEntrada = LocalDate.parse(fechaEntrada, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalDate busquedaSalida = LocalDate.parse(fechaSalida, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
+        // Recorrer habitaciones para revisar las reservas de esas habitaciones
         for (Habitacion hab : habitaciones) {
             boolean ocupada = false;
 
             for (Reserva res : hab.getReservas()) {
+
+                // Transformar a Date también las fechas que tengan esas reservas
                 LocalDate resEntrada = LocalDate.parse(res.getFechaEntrada(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 LocalDate resSalida = LocalDate.parse(res.getFechaSalida(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                // Finalmente comparar si la fecha de entrada recibida es anterior a la salida de la reserva encontrada
+                // y si la fecha de salida recibida es posterior a la fecha de entrada encontrada
+                // Entonces significa que la habitación está ocupada en esas fechas por lo que no la mostrará.
 
                 if (busquedaEntrada.isBefore(resSalida) && busquedaSalida.isAfter(resEntrada)) {
                     ocupada = true;
                     break;
                 }
             }
+            // Si no se cumple, la agrega a las disponibles.
             if (!ocupada) {
                 disponibles.add(hab);
             }
