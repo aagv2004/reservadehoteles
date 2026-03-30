@@ -33,9 +33,7 @@ public class HabitacionController {
         Cliente c4 = new Cliente(4, "Eduardo", "Vergara", 32);
         Cliente c5 = new Cliente(5, "Juan", "Valdez", 33);
 
-        // Crear reservas de habitaciones
-       
-
+        // Crear reservas de habitaciones con List.of() para que esté más ordenado
 
         habitaciones.add(new Habitacion(1, 201, TipoHabitacion.SIMPLE, 5000, List.of(
         new Reserva(1, EstadoReserva.PENDIENTE, "01/01/2024", "05/02/2024", "12/12/2023", c1))));
