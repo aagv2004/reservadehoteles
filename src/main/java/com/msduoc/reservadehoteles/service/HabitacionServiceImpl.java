@@ -1,25 +1,64 @@
 package com.msduoc.reservadehoteles.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.msduoc.reservadehoteles.models.Habitacion;
+import com.msduoc.reservadehoteles.models.Reserva;
 import com.msduoc.reservadehoteles.repository.HabitacionRepository;
+import com.msduoc.reservadehoteles.repository.ReservaRepository;
 
 @Service
 public class HabitacionServiceImpl implements HabitacionService {
     @Autowired
     private HabitacionRepository habitacionRepository;
 
+    @Autowired
+    private ReservaRepository reservaRepository;
+
     @Override
     public List<Habitacion> getAllHabitaciones() {
+        if (habitacionRepository.findAll().isEmpty()) {
+            throw new RuntimeException("/GET no hay habitaciones para mostrar.");
+        }
         return habitacionRepository.findAll();
     }
 
     @Override
     public Optional<Habitacion> getHabitacionById(Long id) {
+        if (habitacionRepository.findById(id) == null) {
+            throw new RuntimeException("/GET id de habitación no encontrado para mostrar.");
+        }
         return habitacionRepository.findById(id);
+    }
+
+    @Override
+    public List<Habitacion> getHabitacionesDisponibles() {
+        List<Habitacion> todas = habitacionRepository.findAll();
+        List<Reserva> reservasActivas = reservaRepository.findAll();
+
+        List<Habitacion> disponibles = new ArrayList<>();
+
+        for (Habitacion hab : todas) {
+            boolean estaOcupada = false;
+
+            for (Reserva res : reservasActivas) {
+                if (res.getHabitacion().getId().equals(hab.getId())) {
+                    if (!res.getEstado().toString().equalsIgnoreCase("CANCELADA")) {
+                        estaOcupada = true;
+                        break;
+                    }
+                }
+            }
+
+            if (estaOcupada == false) {
+                disponibles.add(hab);
+            }
+        }
+
+        return disponibles;
     }
 
     @Override
@@ -47,18 +86,17 @@ public class HabitacionServiceImpl implements HabitacionService {
                 habitacion.setPrecioPorNoche(existente.getPrecioPorNoche());
             }
 
-            if (habitacion.getReservas() == null) {
-                habitacion.setReservas(existente.getReservas());
-            }
-
             return habitacionRepository.save(habitacion);
         } else {
-            return null;
+            throw new RuntimeException("/PUT id de habitación no encontrado para actualizar.");
         }
     }
 
     @Override
     public void deleteHabitacion(Long id) {
+        if (habitacionRepository.findById(id) == null) {
+            throw new RuntimeException("/DELETE id de habitación no encontrado para eliminar.");
+        }
         habitacionRepository.deleteById(id);
     }
 }

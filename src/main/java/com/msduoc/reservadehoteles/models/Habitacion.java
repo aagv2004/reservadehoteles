@@ -1,8 +1,6 @@
 package com.msduoc.reservadehoteles.models;
 
-import java.util.List;
 import com.msduoc.reservadehoteles.enums.TipoHabitacion;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 
@@ -38,9 +35,6 @@ public class Habitacion {
     @Column(name = "precio_noche")
     private double precioPorNoche;
 
-    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
-    private List<Reserva> reservas;
-
     public Long getId() {
         return id;
     }
@@ -57,10 +51,6 @@ public class Habitacion {
         return precioPorNoche;
     }
 
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -75,9 +65,5 @@ public class Habitacion {
 
     public void setPrecioPorNoche(double precioPorNoche) {
         this.precioPorNoche = precioPorNoche;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
     }
 }

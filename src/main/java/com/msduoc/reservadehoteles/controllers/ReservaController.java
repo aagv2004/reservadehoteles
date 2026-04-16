@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.msduoc.reservadehoteles.enums.EstadoReserva;
 import com.msduoc.reservadehoteles.models.Reserva;
 import com.msduoc.reservadehoteles.service.ReservaService;
 
@@ -37,6 +38,12 @@ public class ReservaController {
         return reservaService.getReservaById(id);
     }
 
+    @GetMapping("/estado/{estado}")
+    public List<Reserva> getReservasByEstado(@PathVariable String estado) {
+        EstadoReserva estadoEnum = EstadoReserva.valueOf(estado.toUpperCase());
+        return reservaService.findByEstado(estadoEnum);
+    }
+
     // Endpoints: POST
 
     @PostMapping
@@ -47,7 +54,7 @@ public class ReservaController {
 
     // Endpoints: PUT
 
-    @PutMapping
+    @PutMapping("/{id}")
     public Reserva updateReserva(@PathVariable Long id, @RequestBody Reserva reserva) {
         log.info("/PUT actualizando reserva con id: {}", id);
         return reservaService.updateReserva(id, reserva);

@@ -1,13 +1,11 @@
 package com.msduoc.reservadehoteles.models;
 
 
-import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 
@@ -31,9 +29,6 @@ public class Cliente {
     @Positive(message = "La edad no puede ser menor que cero.")
     @Column(name = "edad")
     private int edad;
-
-    @OneToMany(mappedBy = "cliente")
-    private List<Reserva> reservas;
 
     public Long getId() {
         return id;

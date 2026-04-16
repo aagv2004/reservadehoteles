@@ -2,6 +2,7 @@ package com.msduoc.reservadehoteles.service;
 
 import java.util.List;
 import java.util.Optional;
+import com.msduoc.reservadehoteles.enums.EstadoReserva;
 import com.msduoc.reservadehoteles.models.Reserva;
 
 public interface ReservaService {
@@ -10,4 +11,6 @@ public interface ReservaService {
     Reserva createReserva(Reserva reserva);
     Reserva updateReserva(Long id, Reserva reserva);
     void deleteReserva(Long id);
+    Reserva cancelarReserva(Long id);
+    List<Reserva> findByEstado(EstadoReserva estado);
 }

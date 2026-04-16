@@ -10,5 +10,5 @@ public interface HabitacionService {
     Habitacion createHabitacion(Habitacion habitacion);
     Habitacion updateHabitacion(Long id, Habitacion habitacion);
     void deleteHabitacion(Long id);
-    
+    List<Habitacion> getHabitacionesDisponibles();
 }
