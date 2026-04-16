@@ -117,17 +117,6 @@ public class ReservaServiceImpl implements ReservaService{
     }
 
     @Override
-    public Reserva cancelarReserva(Long id) {
-        if (reservaRepository.findById(id) != null) {
-            Reserva res = reservaRepository.findById(id).get();
-            res.setEstado(EstadoReserva.CANCELADA);
-            return res;
-        } else {
-            throw new RuntimeException("/PUT id de reserva no encontrado para cancelar.");
-        }
-    }
-
-    @Override
     public List<Reserva> findByEstado(EstadoReserva estado) {
         List<Reserva> todas = reservaRepository.findAll();
         List<Reserva> filtradas = new ArrayList<>();

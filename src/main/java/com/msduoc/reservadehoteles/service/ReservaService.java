@@ -11,6 +11,5 @@ public interface ReservaService {
     Reserva createReserva(Reserva reserva);
     Reserva updateReserva(Long id, Reserva reserva);
     void deleteReserva(Long id);
-    Reserva cancelarReserva(Long id);
     List<Reserva> findByEstado(EstadoReserva estado);
 }
