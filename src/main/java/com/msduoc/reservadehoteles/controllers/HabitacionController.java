@@ -1,6 +1,7 @@
 package com.msduoc.reservadehoteles.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,20 +9,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-// import com.msduoc.reservadehoteles.enums.EstadoReserva;
-// import com.msduoc.reservadehoteles.enums.TipoHabitacion;
-// import com.msduoc.reservadehoteles.models.Cliente;
+import com.msduoc.reservadehoteles.enums.EstadoReserva;
 import com.msduoc.reservadehoteles.models.Habitacion;
-// import com.msduoc.reservadehoteles.models.Reserva;
+import com.msduoc.reservadehoteles.models.Reserva;
 import com.msduoc.reservadehoteles.service.HabitacionService;
 import java.util.List;
 import java.util.Optional;
-// import java.time.LocalDate;
-// import java.time.format.DateTimeFormatter;
-// import java.util.ArrayList;
-// import org.springframework.web.bind.annotation.RequestParam;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 @RestController
@@ -41,55 +38,55 @@ public class HabitacionController {
         return habitacionService.getHabitacionById(id);
     }
 
-    // @GetMapping("/canceladas")
-    // public List<Habitacion> getCanceladas() {
-    //     List<Habitacion> canceladas = new ArrayList<>();
+    @GetMapping("/canceladas")
+    public List<Habitacion> getCanceladas() {
+        List<Habitacion> canceladas = new ArrayList<>();
 
-    //     for (Habitacion hab : habitaciones) {
-    //         for (Reserva res : hab.getReservas()) {
-    //             if (res.getEstado().equals(EstadoReserva.CANCELADA)) {
-    //                 canceladas.add(hab);
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return canceladas;
-    // }
+        for (Habitacion hab : habitacionService.getAllHabitaciones()) {
+            for (Reserva res : hab.getReservas()) {
+                if (res.getEstado().equals(EstadoReserva.CANCELADA)) {
+                    canceladas.add(hab);
+                    break;
+                }
+            }
+        }
+        return canceladas;
+    }
 
-    // @GetMapping("/habitaciones/disponibles")
-    // public List<Habitacion> getHabitacionesDisponibles(@RequestParam String fechaEntrada, @RequestParam String fechaSalida) {
-    //     List<Habitacion> disponibles = new ArrayList<>();
+    @GetMapping("/disponibles")
+    public List<Habitacion> getDisponibles(
+        @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate entrada, 
+        @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate salida
+    ) {
+        // Necesitamos todas y un array para guardar las disponibles
+        List<Habitacion> todas = habitacionService.getAllHabitaciones();
+        List<Habitacion> disponibles = new ArrayList<>();
 
-    //     // Transformar a Date porque el perla usó String
-    //     LocalDate busquedaEntrada = LocalDate.parse(fechaEntrada, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    //     LocalDate busquedaSalida = LocalDate.parse(fechaSalida, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        // Necesitamos recorrer todas para saber que de hecho existen
+        for (Habitacion hab : todas) {
+            boolean ocupada = false;
 
-    //     // Recorrer habitaciones para revisar las reservas de esas habitaciones
-    //     for (Habitacion hab : habitaciones) {
-    //         boolean ocupada = false;
+            if (hab.getReservas() == null || hab.getReservas().isEmpty()) {
+                disponibles.add(hab);
+                continue;
+            }
 
-    //         for (Reserva res : hab.getReservas()) {
+            // Acá aplicamos el filtro, si la fecha de entrada (del request) es anterior a la fecha de salida (de la reserva)
+            // Y, además la fecha de salida (del request) es posterior a la fecha de entrada (de la reserva), entonces está ocupada.
+            for (Reserva res : hab.getReservas()) {
+                if (entrada.isBefore(res.getFechaSalida()) && salida.isAfter(res.getFechaEntrada())) {
+                    ocupada = true;
+                    break;
+                }
+            }
 
-    //             // Transformar a Date también las fechas que tengan esas reservas
-    //             LocalDate resEntrada = LocalDate.parse(res.getFechaEntrada(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    //             LocalDate resSalida = LocalDate.parse(res.getFechaSalida(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-    //             // Finalmente comparar si la fecha de entrada recibida es anterior a la salida de la reserva encontrada
-    //             // y si la fecha de salida recibida es posterior a la fecha de entrada encontrada
-    //             // Entonces significa que la habitación está ocupada en esas fechas por lo que no la mostrará.
-
-    //             if (busquedaEntrada.isBefore(resSalida) && busquedaSalida.isAfter(resEntrada)) {
-    //                 ocupada = true;
-    //                 break;
-    //             }
-    //         }
-    //         // Si no se cumple, la agrega a las disponibles.
-    //         if (!ocupada) {
-    //             disponibles.add(hab);
-    //         }
-    //     }
-    //     return disponibles;
-    // }
+            // Solo agregamos las que estén ocupada = false
+            if (ocupada == false) {
+                disponibles.add(hab);
+            }
+        }
+        return disponibles;
+    }
 
     // Endpoints: POST
 
