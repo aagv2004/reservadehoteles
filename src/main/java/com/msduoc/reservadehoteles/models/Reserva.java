@@ -1,27 +1,39 @@
 package com.msduoc.reservadehoteles.models;
 
 import com.msduoc.reservadehoteles.enums.EstadoReserva;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "reserva")
 public class Reserva {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "estado")
     private EstadoReserva estado;
+
+    @Column(name = "fechaEntrada")
     private String fechaEntrada;
+
+    @Column(name = "fechaSalida")
     private String fechaSalida;
+
+    @Column(name = "fechaReserva")
     private String fechaReserva;
+
+    @Column(name = "cliente")
     private Cliente cliente;
 
 
-    public Reserva(int id,  EstadoReserva estado, String fechaEntrada, String fechaSalida, String fechaReserva,
-            Cliente cliente) {
-        this.id = id;
-        this.cliente = cliente;
-        this.estado = estado;
-        this.fechaEntrada = fechaEntrada;
-        this.fechaSalida = fechaSalida;
-        this.fechaReserva = fechaReserva;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -43,6 +55,10 @@ public class Reserva {
 
     public String getFechaReserva() {
         return fechaReserva;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setEstado(EstadoReserva estado) {

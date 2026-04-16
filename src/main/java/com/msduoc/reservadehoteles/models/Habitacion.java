@@ -2,24 +2,35 @@ package com.msduoc.reservadehoteles.models;
 
 import java.util.List;
 import com.msduoc.reservadehoteles.enums.TipoHabitacion;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "Habitacion")
 public class Habitacion {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "numeroHabitacion")
     private int numeroHabitacion;
+
+    @Column(name = "tipoHabitacion")
     private TipoHabitacion tipoHabitacion;
+
+    @Column(name = "precioPorNoche")
     private double precioPorNoche;
+
+    @Column(name = "reservas")
     private List<Reserva> reservas;
 
-    public Habitacion(int id, int numeroHabitacion, TipoHabitacion tipoHabitacion,
-            double precioPorNoche, List<Reserva> reservas) {
-        this.id = id;
-        this.numeroHabitacion = numeroHabitacion;
-        this.tipoHabitacion = tipoHabitacion;
-        this.precioPorNoche = precioPorNoche;
-        this.reservas = reservas;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,6 +48,10 @@ public class Habitacion {
 
     public List<Reserva> getReservas() {
         return reservas;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNumeroHabitacion(int numeroHabitacion) {

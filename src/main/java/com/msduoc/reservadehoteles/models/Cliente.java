@@ -1,19 +1,32 @@
 package com.msduoc.reservadehoteles.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="Cliente")
 public class Cliente {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "apellido")
     private String apellido;
+
+    @Column(name = "edad")
     private int edad;
 
-    public Cliente(int id, String nombre, String apellido, int edad) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.edad = edad;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -27,6 +40,10 @@ public class Cliente {
 
     public int getEdad() {
         return edad;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNombre(String nombre) {
